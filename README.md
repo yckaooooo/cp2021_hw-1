@@ -1,4 +1,3 @@
-# cmstemplate
-Github pages template for cmsimde submodule
+# cp2021_hw
 
-http://mde.tw/cmstemplate
+http://mde.tw/cp2021_hw
