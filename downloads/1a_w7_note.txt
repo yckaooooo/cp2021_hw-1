@@ -82,9 +82,17 @@ Y:\home_ipv4\.ssh\tcell_private.ppk
 
 格式為: url = git@github.com:mdecourse/cp2021_hw.git
 
+url = git@mysession:mdecourse/cp2021_hw.git
+
 git@github.com  代表以 git 為帳號, 採 SSH 連線到 putty 所設定的 github.com  session
 
 用 git status 查詢目前改的倉儲內容
+
+6) regedit 開啟登錄檔案設定 (registry)
+
+將 電腦\HKEY_CURRENT_USER\SOFTWARE\SimonTatham 匯出, 以便在 start_ipv4.bat 中利用下列指令將設定直接匯入.
+
+REGEDIT.EXE /S %Disk%:\putty_github_com.reg;
 
 
 
