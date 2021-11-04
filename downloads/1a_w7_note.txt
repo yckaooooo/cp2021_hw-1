@@ -67,7 +67,7 @@ Openssh 格式的 key:
 
 ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAkss/SlUpaw2AiVNatINLdNlDWpYZS8i4M5S3xwS02G/2TK0ObvZG+XyVpQT+AVn4SS23o9Cn2x5ZoUeixc/9S6LZrMScP/OS7P2/naBtvoYbYlfmxpI9JyVUgKjxjKU/uAEhNsD9d2GRbHeF2jscJfX4L26WYLp9jVYG+KZcQwEAq3SkzGOCwgX8WkXco9mdbdMhWBWAOeFi/786RiCcJ6yALlSbZKZ4HDrgi5i+DOPVDP7hhppW2tCHF+rx5q4HWrHCCpR0XCeZDpaM84ZEToauVvngotXwSAw5GPwa7RDQuUA3uAPkyIBnV2uMmq6LKdW0h4ZgcO9jBIOyp6ABbw== rsa-key-20211104
 
-利用 puttygen 將 private key 存至隨身碟某處, 在設定 putty session 會指向這把 private
+利用 puttygen 將 private key 存至隨身碟 Y:\home_ipv4\.ssh\tcell_private.ppk, 在設定 putty session 會指向這把 private
 key
 
 4) 利用 putty.exe 建立一個可以連線到 github SSH 伺服器的 putty session
