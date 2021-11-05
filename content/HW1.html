@@ -166,13 +166,32 @@ img.add_border {
 <p><a href="https://mde.tw/cp2021_hw/content/run.html?src=https://gist.githubusercontent.com/mdecourse/3db55f124185def5aac8e5d51579c484/raw/cc346e5ed77c63051ea69c985b191d8bd3afc1fc/red_rect2_with_start_button.py">HW1-2</a>: 加入與 <a href="https://mde.tw/cp2021/content/Cango.html">Cango 頁面</a> Fourbar 程式碼相同功能的啟動按鈕, 讓使用者可以利用按鈕啟動或中斷紅色方塊上下碰撞移動. 完成後請將程式碼存入個人 Gist 區.</p>
 <h4>程式碼說明:</h4>
 <p>HW1-1.py</p>
+<p><a href="https://brython.info/static_doc/en/browser.html">Brython browser 模組</a></p>
+<p><a href="https://brython.info/static_doc/en/html.html">Brython browser html 模組</a></p>
+<p><a href="https://brython.info/static_doc/en/cookbook/bind_unbind.html">Brython enable/disable event</a></p>
+<p>Python 函式定義與呼叫</p>
+<p>Python 縮排 (indentation)</p>
+<p>字串 (string)</p>
+<p>數列 (list)</p>
+<p>if 判斷式</p>
+<p>在 Python 關鍵字中, None, True 與 False 第一個字母都必須是大寫</p>
 <p><a href="https://www.google.com/search?q=site%3Apython.org+global">在 python.org 網站範圍搜尋 global 關鍵字</a></p>
 <p>有關 Python 的 global: <a href="https://docs.python.org/3/faq/programming.html#what-are-the-rules-for-local-and-global-variables-in-python">https://docs.python.org/3/faq/programming.html#what-are-the-rules-for-local-and-global-variables-in-python</a></p>
-<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">from browser import html
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false"># 從 browser 導入 html
+from browser import html
+# 從 browser 導入 document 並且對應為 doc
 from browser import document as doc
+# 導入 browser.timer
 import browser.timer
 
+# 定義一個 game() 函式
 def game():
+    """
+利用 global 關鍵字 將 px, py 與 speed 
+設為可在函式內改變對應內容 
+(意即, 這三個定義在函式外的全域變數,  
+在函式中分別位於等號左邊)
+    """
     global px, py, speed
     ctx.clearRect(px, py, width, height)
     ctx.fillStyle = "red"
@@ -188,6 +207,12 @@ def game():
     
     ctx.fillRect(px, py, width, height)
 
+"""
+a variable declared outside of the function or 
+in global scope is known as a global variable. 
+This means that a global variable can be accessed 
+inside or outside of the function.
+"""
 
 canvas = html.CANVAS(width = 600, height = 600)
 canvas.id = "game-board"
