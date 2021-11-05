@@ -339,22 +339,29 @@ doc["power"].bind("click", launchAnimation)
 <p>4. 請在個人作業網站的 HW2 區域下增設一個 H2 頁面, 將該網頁標題命名為 run, 可以如 <a href="https://mde.tw/cp2021/content/run.html">run</a> 頁面中的內容, 並且利用此頁面收集 Python 範例程式. (例如: 可自動執行的貪食蛇: <a href="https://mde.tw/cp2021/content/run.html?src=https://gist.githubusercontent.com/mdecourse/d306a1f57e53bfd6466eaae20bcb9439/raw/2160a12b9fec9707a120a383ed5d38b9b78a02cf/snake.py">https://mde.tw/cp2021/content/run.html?src=https://gist.githubusercontent.com/mdecourse/d306a1f57e53bfd6466eaae20bcb9439/raw/2160a12b9fec9707a120a383ed5d38b9b78a02cf/snake.py</a> 將 <a href="https://gist.github.com/mdecourse/d306a1f57e53bfd6466eaae20bcb9439">https://gist.github.com/mdecourse/d306a1f57e53bfd6466eaae20bcb9439</a> 作為 <a href="https://mde.tw/cp2021/content/run.html">https://mde.tw/cp2021/content/run.html</a> 頁面中 src 變數的值, 就可以在頁面中導入程式碼並執行)</p><h1>Server</h1>
 <p>在電腦輔助設計室中的 11 台舊電腦, 因為第三磁區並沒有保護, 因此可以設定為 Flask 與 Fossil SCM server 主機.</p>
 <p>六台新電腦中的一台可以透過 <a href="https://support.microsoft.com/zh-tw/windows/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E9%81%A0%E7%AB%AF%E6%A1%8C%E9%9D%A2-5fe128d5-8fb1-7a23-3b8a-41e636865e8c">remote desktop</a> 連線至各分組的伺服器進行設定.</p>
-<p>Windows 10 中的動態課程網頁系統:</p>
-<h4>以 waitress 執行 cmsimde/wsgi.py:</h4>
-<p style="padding-left: 30px;">python -m pip install waitress</p>
+<p>至於在 Windows 10 中可以利用 <a href="https://nssm.cc/">https://nssm.cc/</a> 將應用程式設為 service.</p>
+<h4>Windows 10 中的動態課程網頁系統:</h4>
+<h4 style="padding-left: 30px;">以 waitress 執行 cmsimde/wsgi.py:</h4>
+<p style="padding-left: 60px;">python -m pip install waitress</p>
 <p>建立一個 waitress_server.py:</p>
 <pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false"># 執行前, 必須要先利用 python -m pip install waitress 安裝 wairess 模組
 # 接著從 waitress 導入 serve
 from waitress import serve
  
 # 導入 flaskapp
-# 在不更動 cmsimde 子模組架構內容的情況下, 必須複製一份
-# cmsimde/nocache.py 至倉儲目錄.
+"""
+在不將 cmsimde 目錄納入 sys.path 搜尋路徑時, 
+可以複製一份 cmsimde/nocache.py 至倉儲目錄. 
+或者將 cmsimde 納入系統搜尋路徑中, 
+且必須放在導入 flaskapp  之前
+"""
+import sys
+sys.path.append("./cmsimde")
 from cmsimde import flaskapp
  
 # run flaskapp.app with production waitress
 serve(flaskapp.app, host='0.0.0.0', port=5000, url_scheme='https')</pre>
-<p>接著先除去 url_scheme='https' 後以 python waitress_server.py 執行. cmsimde 主機將可透過瀏覽器連結 <a href="http://server_ip:5000">http://server_ip:5000</a> </p>
+<p>接著先除去 url_scheme='https' 後以 python waitress_server.py 執行. cmsimde 主機將可透過瀏覽器連結 <a href="http://server_ip:5000">http://server_ip:5000</a></p>
 <p>接下來則可以利用 <a href="https://www.stunnel.org/">Stunnel</a> 作為 https 代理主機, 作為 <a href="http://server_ip:5000">http://server_ip:5000</a> 與外部瀏覽器連接的代理轉接者.</p>
 <h4>stunnel.conf 設定內容:</h4>
 <pre class="brush:js;auto-links:false;toolbar:false" contenteditable="false">[https]
