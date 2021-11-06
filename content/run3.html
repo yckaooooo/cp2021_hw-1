@@ -2,6 +2,7 @@
         <head>
         <title>cp2021 homework site</title>
         <meta charset="utf-8">
+<meta property="head" content="H2">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
         <link rel="stylesheet" href="./../cmsimde/static/chimper/fonts/icomoon/style.css">
@@ -138,26 +139,91 @@ img.add_border {
           </div>
           
         </header>
-    <div id="tipue_search_content"> <a href='run.html'>Next</a> >> run<br /><h1>About</h1>
-<p><span style="background-color: #ffff99;">是的, 重點在於您希望建立何種樣貌的學習歷程檔案?</span></p>
-<p>假如進入大學學習是一段 <a href="https://www.oxfordlearnersdictionaries.com/definition/english/journey_1?q=journey">Journey</a>, 您希望踏上一段什麼樣子的旅程?</p>
-<p>是讓人回味無窮? 抑或悔不當初?</p>
-<p>何謂 <a href="https://www.oxfordlearnersdictionaries.com/definition/english/academic_1?q=academic">academic</a> <a href="https://www.oxfordlearnersdictionaries.com/definition/english/portfolio">portfolio</a> (學習歷程檔案)?</p>
-<p style="padding-left: 30px;"><a href="https://www.uts.edu.au/research-and-teaching/learning-and-teaching/scholarship-and-research/scholarship-learning-and-teaching/developing-academic-portfolio">https://www.uts.edu.au/research-and-teaching/learning-and-teaching/scholarship-and-research/scholarship-learning-and-teaching/developing-academic-portfolio</a></p>
-<p style="padding-left: 60px;">A portfolio supports you in your role as an academic by creating a record of your reflection, development and achievements over time. You may like to use aspects of your portfolio to provide evidence for formal probation review, progression or promotion processes.</p>
-<p style="padding-left: 30px;"><a href="https://www.hr.uwa.edu.au/working/academic/portfolio">https://www.hr.uwa.edu.au/working/academic/portfolio</a></p>
-<p style="padding-left: 60px;">An Academic Portfolio is a summary of your major activities and accomplishments, documenting the nature and extent of your contributions as well as your role and achievements. It has three major components (or folios), supported by your Curriculum Vitae (CV).</p>
-<p style="padding-left: 30px;"><a href="https://www.utu.fi/en/university/come-work-with-us/academic-portfolio">https://www.utu.fi/en/university/come-work-with-us/academic-portfolio</a></p>
-<p style="padding-left: 60px;">A good portfolio is comprehensive, brief, and concise. The recommended maximum length of the academic portfolios used in filling the teaching vacancies at the University is five pages. Faculties may give more detailed information about the quality and quantity of appendixes.<br/><br/>Portfolios are created for a variety of purposes, the most important situation being recruitment. Portfolio is also an excellent way for members of personnel to cultivate their expertise, and it can also be used in development discussions and when building the work unit’s job description.</p>
-<p style="padding-left: 30px;"><a href="https://www.huronconsultinggroup.com/insights/academic-portfolio-data-collaboration-teach">https://www.huronconsultinggroup.com/insights/academic-portfolio-data-collaboration-teach</a></p>
-<p style="padding-left: 60px;">Successfully managing an academic portfolio requires continued collaboration and use of data. There are many stakeholders involved in the process and emphasizing the importance of collaboration will not only assist portfolio management, but also an institution’s mission and vision. Institutional and academic leaders can align conversations about strategic activities and information management to strengthen long-range academic planning.<br/><br/>Additionally, as leaders review program-level costs and data as a part of academic portfolio management, they will be able to identify opportunities to reallocate funding to support resource-intensive academic programs. Better access to this data will also increase visibility on learning, progression and graduation outcomes. As the relationships and collaboration between academic leadership and faculty strengthen, decision making, resource allocation and data analysis will improve.</p>
-<p>這是計算機程式課程 2021 Fall 的作業倉儲與網站 template</p>
-<hr/>
-<p>demo 學號與帳號: mdecourse</p>
-<p>網站倉儲: <a href="https://github.com/mdecourse/cp2021_hw">https://github.com/mdecourse/cp2021_hw</a></p>
-<p>網站連結: <a href="https://mde.tw/cp2021_hw">https://mde.tw/cp2021_hw</a></p>
-<p>其他與個人或作業相關資料說明或介紹:</p>
-<p>mdecourse 所屬的實驗室: <a href="https://mde.tw">https://mde.tw</a></p><br /> <a href='run.html'>Next</a> >> run</div>
+    <div id="tipue_search_content">run2 << <a href='run2.html'>Previous</a> <a href='Server.html'>Next</a> >> Server<br /><h1>run3</h1>
+<p>第三種在網頁中執行 Brython 的方法, 是直接將程式寫在 html 網頁中執行. 本頁面的 html 程式碼為 <a href="./../downloads/run3.txt">run3.txt</a>.</p>
+<!-- 導入 brython 程式庫 -->
+<script src="./../cmsimde/static/brython.js"></script>
+<script src="./../cmsimde/static/brython_stdlib.js"></script>
+<!-- 啟動 Brython -->
+<script>
+window.onload=function(){
+brython({debug:1, pythonpath:['./../cmsimde/static/','./../downloads/py/']});
+}
+</script>
+<script type="text/python3">
+# Spur Gear in Cango and gearUtils-09.js
+from browser import document as doc
+from browser import html
+from browser import window
+import browser.timer
+import math
+# 利用 html 建立一個 CANVAS 標註物件, 與變數 canvas 對應
+canvas = html.CANVAS(width = 600, height = 400)
+# 將 canvas 標註的 id 設為 "cango_gear"
+canvas.id = "cango_gear"
+# 將 document 中 id 為 "brython_div" 的標註
+# 設為與 brython_div 變數對應
+brython_div = doc["brython_div"]
+# 將 canvas 標註放入 brython_div 所在位置
+brython_div <= canvas
+# 將頁面中 id 為 cango_gear 的 CANVAS 設為與 canvas 對應
+canvas = doc["cango_gear"]
+# convert Javascript objects to Brython variables
+cango = window.Cango.new
+circle = window.circle.new
+shape = window.Shape.new
+path = window.Path.new
+creategeartooth = window.createGearTooth.new
+svgsegs = window.SVGsegs.new
+# 經由 Cango 轉換成 Brython 的 cango
+# 指定將圖畫在 id="cango_gear" 的 canvas 上
+cgo = cango("cango_gear")
+# 以下將要使用 gearUtils-09.js 畫出正齒輪外形
+# 假設齒數為 25
+num = 25
+# 利用 gearUtils-09 產生單一齒輪外形資料
+tooth = creategeartooth(10, num, 20)
+# 在 Cango 中, 只有 SVG 才能 rotate, appendPath 或 joinPath
+# 將齒輪外形轉為 SVG segment
+toothSVG = svgsegs(tooth)
+path1 = path(toothSVG.scale(1), {"degs": 45, "x": 100, "y": 100, "strokeColor": "#606060"})
+#print(path1)
+# SVG list
+circle = circle(50)
+#print(circle)
+circleSVG = svgsegs(circle)
+#print(circleSVG)
+# 若將 circleSVG 轉為 Cango path, 則可以用 cgo.render()
+#circlePath = path(circleSVG, {"x": 100, "y": 100, "strokeColor": "#606060"})
+#cgo.render(circlePath)
+# svgsegs 資料可以 joinPath 或 appendPath
+# joinPath 按照頭尾順序銜接
+# appendPath 則無順序銜接
+# 從 toothSVG 複製出單齒 SVG 資料
+one = toothSVG.dup()
+# 以照齒數, 逐一複製並附加在原單齒資料中
+# 第一齒的資料已經在 toothSVG 中, 因此重複迴圈從 1 開始
+for i in range(1, num):
+    newSVG = one.rotate(360*i/num)
+    toothSVG = toothSVG.appendPath(newSVG)
+# 將 SVG 轉為 path 資料
+#gear = path(toothSVG, {"x": 150, "y": 150, "strokeColor": "#606060"})
+# path 資料可以透過 cgo.render()顯示繪圖物件
+#cgo.render(gear)
+# 當 circle 接外齒使用 appendPath
+toothSVG = toothSVG.appendPath(circleSVG)
+#print(toothSVG)
+spurPath = path(toothSVG, {"x": 150, "y": 150, "strokeColor": "#606060"})
+cgo.render(spurPath)
+</script>
+<!-- Brython 程式執行的結果, 都以 brython_div 作為切入位置 -->
+<div id="brython_div"></div>
+<!-- 導入 gearUtils-0.9.js Cango 齒輪繪圖程式庫 -->
+<script src="https://mde.tw/cp2021/cmsimde/static/Cango-24v03-min.js"></script>
+<script src="https://mde.tw/cp2021/cmsimde/static/gearUtils-09.js"></script>
+<script src="https://mde.tw/cp2021/cmsimde/static/SVGpathUtils-6v03-min.js"></script>
+<script src="https://mde.tw/cp2021/cmsimde/static/sylvester.js"></script>
+<script src="https://mde.tw/cp2021/cmsimde/static/PrairieDraw.js"></script><br />run2 << <a href='run2.html'>Previous</a> <a href='Server.html'>Next</a> >> Server</div>
         
     <!-- footer -->
       <div class="container">
