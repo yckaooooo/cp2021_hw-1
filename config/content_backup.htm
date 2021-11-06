@@ -326,6 +326,32 @@ def launchAnimation(ev):
  
 doc["power"].bind("click", launchAnimation)
 </pre>
+<p></p><h2>Token</h2>
+<p>當你建立 Github 帳號後就可以利用 Gist 儲存資料或程式碼, 且可以利用 <a href="https://mde.tw/cp2021/content/run.html">https://mde.tw/cp2021/content/run.html</a> 來執行 Brython 程式.</p>
+<p>在 run.html 執行 Brython 程式, 可以使用下列三種方法:</p>
+<ol>
+<li>直接連線至 <a href="https://mde.tw/cp2021/content/run.html">https://mde.tw/cp2021/content/run.html</a> 將 Brython 程式寫在編輯區, 然後按下 Run.</li>
+<li>將 Brython 程式存在 Gist, 利用 run.html?src=Gist_URL, run.html 中的 Javascript 就會導入此 Gist 程式執行.</li>
+<li>將 Brython 程式寫在 run.html 頁面中, 然後安排其中的 Javascript 或 Brython 程式導入執行.</li>
+</ol>
+<p>而上述三種程式的執行若更動 run.html 或取 run.html?src=Gist_URL 連結放入頁面, 都必須要在各自的 cp2021_hw倉儲的動態網站中改版, 轉為靜態網頁內容, 然後新增提交並推送至 Github, 建立個人 Github 帳號對應的Personal Token, 就可以放入近端倉儲 .git/config 中的 origin url 帳號密碼區, 然後將改版資料推送到 Github.</p>
+<p>利用 Personal Token 字串 push 改版資料的步驟:</p>
+<ol>
+<li>至 Github 帳號 settings 下的開發者區域建立能夠更動 repo 的權限, 並且決定此 Token 權限的使用期限.</li>
+<li>將此 Token 字串放入對應倉儲 .git/config 檔案中的 origin url=https://Token_String@github.com/帳號/cp2021_hw.git</li>
+</ol><h2>SSH push</h2>
+<p>Github 帳號用戶除了可以利用 Personal Token push 改版資料外, 也可以利用 SSH keys 將改版資料 push 到 Github. 詳細說明可以參考 <a href="https://mde.tw/cd2021/content/SSH%20%E4%BA%86%E6%B2%92.html">SSH 了沒</a>.</p>
+<p>以下說明 SSH push 操作步驟:</p>
+<ol>
+<li>下載 putty 安裝套件, 安裝後, 將 putty 目錄取出放入隨身碟 y:\ 目錄中 (也就是 data 目錄中).</li>
+<li>修改 start_ipv4.bat 或 start_ipv6.bat, 設定 GIT_SSH 變數, 指向 putty 套件目錄中的 plink.exe, 表示隨後的 git push 將透過 putty 中的 session 設定連網. 亦即在 start_ipv4.bat 或 start_ipv6.bat 檔案中加入 <span style="background-color: #ccffcc;">set GIT_SSH=%Disk%:\putty\plink.exe</span></li>
+<li>利用 putty 中的 puttygen.exe 建立 keys, 按下 generate 後, 在 puttygen 執行視窗上方以滑鼠隨意移動, 以便利用滑位置隨機建立 keys, 完成後在原先滑鼠移動位置所出現的 key, 即為 OpenSSH 格式的 public key 內容, 而此一內容就是要放到 Github 帳號 settings 中的 SSH and GPG keys 中的 new SSH key 欄位區 (此為用戶所設定的 public key).</li>
+<li>接下來要利用 puttygen 建立 keys 視窗右下的 save private key, 將此一 .ppk private key 存到 home_ipv4 或</li>
+<li> home_ipv6 目錄下.</li>
+<li>接下來要啟動 putty.exe 建立一個能夠連線至 github.com 網站的 session, 此 session 可以取名為 github.com, 也可以取其它名稱, 只是這個 session 名稱, 將會成為 git 指令與 plink.exe 連結使用後的連線 session 名稱. 而在設定此連線到 github.com 的 session, 在無需設定 proxy 的情況下, 只需要指定 SSH - AUTH 中的 private key 存放位置.</li>
+<li>最後則是配合採用 SSH 協定連線, 必須要修改倉儲中 .git/config url 的連線協定, 從原先的 <a href="https://github.com/帳號/cp2021_hw.git">https://github.com/帳號/cp2021_hw.git</a> 改為 <a href="mailto:git@github.com:帳號/cp2021_hw.git">git@github.com:帳號/cp2021_hw.git</a> 也就是採用 git 作為連線到 putty session 名稱 github.com, 然後採用 github 帳號檢查是否此 private key 與前述放入 Github SSH and GPG keys 的 public 成對, 若匹配成功, 則使用者利用上述的 SSH 就可以執行將改版內容 push 到 Github.</li>
+<li></li>
+</ol>
 <p></p><h1>HW2</h1>
 <p>在電腦輔助設計的新電腦上可以利用 USB 隨身碟設定所謂 Hybrid 可攜程式系統, 也就是 Python 與 Portablegit 使用 c:\2021_portable_kmol\data 目錄中的檔案, 而將 start_ipv4.bat, start_ipv6.bat, data, wscite, tmp 等目錄放在 USB 隨身碟.</p>
 <hr/>
@@ -349,7 +375,12 @@ doc["power"].bind("click", launchAnimation)
 from waitress import serve
  
 # 導入 flaskapp
-# 在不將 cmsimde 目錄納入 sys.path 搜尋路徑時, 可以複製一份 cmsimde/nocache.py 至倉儲目錄. 或者將 cmsimde 納入系統搜尋路徑中, 且必須放在導入 flaskapp  之前
+"""
+在不將 cmsimde 目錄納入 sys.path 搜尋路徑時, 
+可以複製一份 cmsimde/nocache.py 至倉儲目錄. 
+或者將 cmsimde 納入系統搜尋路徑中, 
+且必須放在導入 flaskapp  之前
+"""
 import sys
 sys.path.append("./cmsimde")
 from cmsimde import flaskapp
