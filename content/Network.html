@@ -142,9 +142,14 @@ img.add_border {
     <div id="tipue_search_content">SSH << <a href='SSH.html'>Previous</a> <a href='HW1.html'>Next</a> >> HW1<br /><h1>Network</h1>
 <p>當電腦輔助設計室中, 將連外網路由 NAT 轉為直接連到 Backbone 後, 可能因為電腦中所安裝的套件問題, 會因直接網路連外, 導致外部電腦試圖透過 ARP 快取進行破壞攻擊, 因此必須設法中止此一攻擊, 並且能利用 IPv6 網路協定上網.</p>
 <p><img alt="" height="275" src="./../images/cadlab_network_problem.png" width="400"/></p>
-<p></p>
-<p></p>
-<br />SSH << <a href='SSH.html'>Previous</a> <a href='HW1.html'>Next</a> >> HW1</div>
+<p>面對此一網路威脅的處理方法, 就是在純 IPv6 網路協定下, 讓電腦中所安裝的潛在問題套件無法透過系統的 Proxy 設定連網:</p>
+<ol>
+<li>關閉 Windows 操作系統的網路代理主機設定</li>
+<li>關閉 IPv4 網路協定</li>
+<li>設定 IPv6 的 DNS 伺服器, 2001:b000:168::1</li>
+<li>針對瀏覽器與 git 客戶端, 分別設定能從純 IPv6 轉往只支援 IPv4 網路協定的代理主機.</li>
+</ol>
+<p>git 的網路代理主機設定 git config --global http.proxy http://[Proxy_ip_address]:3128</p><br />SSH << <a href='SSH.html'>Previous</a> <a href='HW1.html'>Next</a> >> HW1</div>
         
     <!-- footer -->
       <div class="container">
