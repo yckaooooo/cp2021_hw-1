@@ -24,7 +24,7 @@
 <p>網站連結: <a href="https://mde.tw/cp2021_hw">https://mde.tw/cp2021_hw</a></p>
 <p>其他與個人或作業相關資料說明或介紹:</p>
 <p>mdecourse 所屬的實驗室: <a href="https://mde.tw">https://mde.tw</a></p><h2>run</h2>
-<p>這個頁面利用 <a href="https://brython.info/">Brython</a> 程式庫, 讓使用者可以直接在瀏覽器中執行 Python 語法程式 (與 CPython <a href="https://brython.info/static_doc/en/stdlib.html">語法比較</a>). Brython 程式庫以 Javascript 編寫, 能在頁面<a href="https://brython.info/static_doc/en/html.html">置入 html,</a> 並<a href="https://brython.info/static_doc/en/jsobjects.html">結合</a>第三方 Javascript 程式庫, 進行 <a href="https://brython.info/gallery/bricks_py.html">2D</a> 與 <a href="https://brython.info/gallery/three.html">3D</a> 繪圖應用.</p>
+<p>這個頁面利用 <a href="https://brython.info/">Brython</a> 程式庫, 讓使用者可以直接在瀏覽器中執行 Python 語法程式 (與 CPython <a href="https://brython.info/static_doc/en/stdlib.html">語法比較</a>). Brython 程式庫以 Javascript 編寫, 能在頁面<a href="https://brython.info/static_doc/en/html.html">置入 html,</a> 並<a href="https://brython.info/static_doc/en/jsobjects.html">結合</a>第三方 Javascript 程式庫, 進行 <a href="https://brython.info/gallery/bricks_py.html">2D</a> 與 <a href="https://brython.info/gallery/three.html">3D</a> 繪圖應用. (範例: <a href="https://imvickykumar999.github.io/Chrome-Extension/Brython%20Snake/snake.html">https://imvickykumar999.github.io/Chrome-Extension/Brython%20Snake/snake.html</a> )</p>
 <!-- 導入 brython 程式庫 -->
 <script src="/static/brython.js"></script>
 <script src="/static/brython_stdlib.js"></script>
@@ -113,14 +113,116 @@ run()
 <script src="https://mde.tw/cp2021/cmsimde/static/gearUtils-09.js"></script>
 <script src="https://mde.tw/cp2021/cmsimde/static/SVGpathUtils-6v03-min.js"></script>
 <script src="https://mde.tw/cp2021/cmsimde/static/sylvester.js"></script>
-<script src="https://mde.tw/cp2021/cmsimde/static/PrairieDraw.js"></script>
-<h2>runsrc</h2>
+<script src="https://mde.tw/cp2021/cmsimde/static/PrairieDraw.js"></script><h2>runsrc</h2>
 <h4>run 頁面在動態網頁的 html:</h4>
 <p><a href="/downloads/run.txt">run.txt</a></p>
 <p></p>
-<h2>SSH</h2>
-<p>putty</p>
-<h2>Network</h2>
+<h2>Snake</h2>
+<!-- 導入 brython 程式庫 -->
+<script src="/static/brython.js"></script>
+<script src="/static/brython_stdlib.js"></script>
+<!-- 啟動 Brython -->
+<script>
+window.onload=function(){
+brython({debug:1, pythonpath:['/static/','./../downloads/py/']});
+}
+</script>
+<p><canvas height="400" id="game-board" width="400"></canvas></p>
+<h4 class="text-center" id="score">Score: 0</h4>
+<p></p>
+<h6 class="text-center" id="high-score">High Score: 0</h6>
+<p></p>
+<div class="text-center"><button class="btn btn-info" id="instructions-btn">Instructions</button></div>
+<script type="text/python">
+from browser import document, html, window
+import random
+
+score = 0
+high_score = 0
+
+px = py = 10
+gs = tc = 20
+ax = ay = 15
+xv = yv = 0
+trail = []
+tail = 5
+
+pre_pause = [0,0]
+paused = False
+
+def game():
+    global px, py, tc, gs, ax, ay, trail, tail, score
+    px += xv
+    py += yv
+    if px < 0:
+        px = tc-1
+    if px > tc-1:
+        px = 0
+    if py < 0:
+        py = tc-1
+    if py > tc-1:
+        py = 0
+    ctx.fillStyle = "black"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = "lime"
+    for i in range(len(trail)):
+        ctx.fillRect(trail[i][0]*gs, trail[i][1]*gs, gs-2, gs-2)
+        if trail[i][0] == px and trail[i][1] == py:
+            score = score if paused else 0
+            tail = tail if paused else 5
+    trail.insert(0, [px, py])
+    while len(trail) > tail:
+        trail.pop()
+
+    if ax == px and ay == py:
+        tail += 1
+        ax = int(random.random()*tc)
+        ay = int(random.random()*tc)
+        score += 1
+    update_score(score)
+    ctx.fillStyle = "red"
+    ctx.fillRect(ax*gs, ay*gs, gs-2, gs-2)
+
+def update_score(new_score):
+    global high_score
+    document["score"].innerHTML = "Score: " + str(new_score)
+    if new_score > high_score:
+        document["high-score"].innerHTML = "High Score: " + str(new_score)
+        high_score = new_score
+
+def key_push(evt):
+    global xv, yv, pre_pause, paused
+    key = evt.keyCode
+    if key == 37 and not paused:
+        xv = -1
+        yv = 0
+    elif key == 38 and not paused:
+        xv = 0
+        yv = -1
+    elif key == 39 and not paused:
+        xv = 1
+        yv = 0
+    elif key == 40 and not paused:
+        xv = 0
+        yv = 1
+    elif key == 32:
+        temp = [xv, yv]
+        xv = pre_pause[0]
+        yv = pre_pause[1]
+        pre_pause = [*temp]
+        paused = not paused
+
+def show_instructions(evt):
+    window.alert("Use the arrow keys to move and press spacebar to pause the game.")
+
+canvas = document["game-board"]
+ctx = canvas.getContext("2d")
+document.addEventListener("keydown", key_push)
+game_loop = window.setInterval(game, 1000/15)
+instructions_btn = document["instructions-btn"]
+instructions_btn.addEventListener("click", show_instructions)
+</script><h2>SSH</h2>
+<p>putty</p><h2>Network</h2>
 <p>當電腦輔助設計室中, 將連外網路由 NAT 轉為直接連到 Backbone 後, 可能因為電腦中所安裝的套件問題, 會因直接網路連外, 導致外部電腦試圖透過 ARP 快取進行破壞攻擊, 因此必須設法中止此一攻擊, 並且能利用 IPv6 網路協定上網.</p>
 <p><img alt="" height="275" src="/images/cadlab_network_problem.png" width="400"/></p>
 <p>面對此一網路威脅的處理方法, 就是在純 IPv6 網路協定下, 讓電腦中所安裝的潛在問題套件無法透過系統的 Proxy 設定連網:</p>
