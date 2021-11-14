@@ -1,5 +1,4 @@
 # coding: utf-8
-# source: https://hawstein.com/2013/04/15/snake-ai/
 
 import curses
 from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN
@@ -8,7 +7,7 @@ from random import randint
 # 貪食蛇運動的場地長寬
 HEIGHT = 10
 WIDTH = 20
-# FIELD_SIZE 為場地長乘以寬表示格子 (CELL) 總數
+# FIELD_SIZE 為場地長乘以寬表示格點總數
 FIELD_SIZE = HEIGHT * WIDTH
 
 # 貪食蛇頭總是位於snake數列的第一個元素
@@ -16,20 +15,11 @@ HEAD = 0
 
 # 用來代表不同東西的數字，由於矩陣上每個格子會處理成到達食物的路徑長度，
 # 因此這三個變數間需要有足夠大的間隔(>HEIGHT*WIDTH)
-# 以整數 0 代表 FOOD, 意即若 board 數列中某一元素
-# 將隨機取得座標後將該數列索引值設為 0 就表示該格子為 FOOD
-# UNDEFINED 值之所以必須大於 HEIGHT*WIDTH, 因為該值將在 BFS 後
-# 表示蛇頭距離 FOOD 的路徑步數, 而最大距離步數將會是 HEIGHT*WIDTH
-# SNAKE 以整數代表, 由於必須有別於 UNDEFINED 與 FOOD 的值, 因此選擇
-# 以 2 * UNDEFINED 這個數字代表該格子被 snake 身體佔住
 FOOD = 0
 UNDEFINED = (HEIGHT + 1) * (WIDTH + 1)
 SNAKE = 2 * UNDEFINED
 
-# 由於 snake 是一維數列，所以對應元素直接加上以下值就表示向四個方向移動
-# 應該是說, 原本該以二維座標表示 board 中各格子的座標, 但在此選擇以一維
-# 數列來代表二維座標 (1, 1) 表為 1*WIDTH+1, 及 x*WIDTH+y
-# 因此往上或往下的移動, 就一維數列值而言, 必須減或加上 WIDTH
+# 由於snake是一維數列，所以對應元素直接加上以下值就表示向四個方向移動
 LEFT = -1
 RIGHT = 1
 UP = -WIDTH
@@ -80,9 +70,8 @@ def is_move_possible(idx, move):
     elif move == UP:
         flag = True if idx > (2*WIDTH-1) else False # 即idx/WIDTH > 1
     elif move == DOWN:
-        flag = True if idx < (FIELD_SIZE-2*WIDTH) else False # 即idx//WIDTH < HEIGHT-2
+        flag = True if idx < (FIELD_SIZE-2*WIDTH) else False # 即idx/WIDTH < HEIGHT-2
     return flag
-    
 # 重置 board
 # board_refresh 後，UNDEFINED 值都變為了到達食物的路徑長度
 # 如需要還原，則要重置它
@@ -195,7 +184,6 @@ def new_food():
     while not cell_free:
         w = randint(1, WIDTH-2)
         h = randint(1, HEIGHT-2)
-        # food coordinate
         food = h * WIDTH + w
         cell_free = is_cell_free(food, snake_size, snake)
     win.addch(food//WIDTH, food%WIDTH, '@')
@@ -219,11 +207,8 @@ def make_move(pbest_move):
     
     # 如果新加入的蛇頭就是食物的位置
     # 蛇長加 1，產生新的食物，重置 board (因為原來那些路徑長度已經用不上了)
-    # snake[HEAD] is the coordinate of the snake head
-    # food is the coordinate of the food
     if snake[HEAD] == food:
-        # mark on the board where the snake head is
-        board[snake[HEAD]] = SNAKE # 新的蛇頭 
+        board[snake[HEAD]] = SNAKE # 新的蛇頭
         snake_size += 1
         score += 1
         if snake_size < FIELD_SIZE: new_food()
@@ -295,7 +280,7 @@ while key != 27:
     # 如果蛇可以吃到食物，board_refresh返回true
     # 並且board中除了蛇身(=SNAKE)，其它的元素值表示從該點運動到食物的最短路徑長
     if board_refresh(food, snake, board):
-        best_move  = find_safe_way() # find_safe_way 的唯一調用處
+        best_move  = find_safe_way() # find_safe_way的唯一調用處
     else:
         best_move = follow_tail()
             
@@ -303,7 +288,7 @@ while key != 27:
         best_move = any_possible_move()
     # 上面一次思考，只得出一個方向，運行一步
     if best_move != ERR: make_move(best_move)   
-    else: break 
+    else: break        
         
 curses.endwin()
 print("\nScore - " + str(score))
