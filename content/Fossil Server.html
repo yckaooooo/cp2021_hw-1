@@ -167,6 +167,23 @@ TIMEOUTclose = 0</pre>
 <p>fossil server c:\pj2022\repo\pj2022.fossil --port 9000 --https</p>
 <p>表示要送出 https 格式封包讓 Stunnel 對外連線.</p>
 <p>待 Fossil SCM server 與 Stunnel 都正常運作後, 就可以透過瀏覽器以 <a href="https://Server_domain_name">https://Server_domain_name</a> 連接至 pj2022.fossil 的網際倉儲伺服器.</p>
+<p>總結上述有關設定 Fossil SCM server 以及 Stunnel https 代理, 所需要執行的 fossil.exe 與 stunnel.exe 都必須能通過 Windows 10 的防火牆.</p>
+<h4>nssm 服務設定:</h4>
+<p style="padding-left: 30px;">nssm install fossil_server</p>
+<p style="padding-left: 60px;">Application Path: C:\pj2022\fossil.exe</p>
+<p style="padding-left: 60px;">Startup directory: C:\pj2022</p>
+<p style="padding-left: 60px;">Arguments: server C:\pj2022\repo\pj2022.fossil --port 9000 --https</p>
+<p style="padding-left: 30px;">nssm install stunnel</p>
+<p style="padding-left: 60px;">Application Path: C:\pj2022\stunnel\bin\stunnel.exe</p>
+<p style="padding-left: 60px;">Startup directory: C:\pj2022</p>
+<p style="padding-left: 60px;">Arguments: 留空白, stunnel.exe 會自動以 config\stunnel.conf 作為設定參數.</p>
+<h4>制式 https:</h4>
+<p style="padding-left: 30px;">透過 <a href="https://letsencrypt.org/">https://letsencrypt.org/</a> 申請正式的網站符號名稱數位簽章.</p>
+<p style="padding-left: 30px;"><a href="https://certbot.eff.org/instructions?ws=nginx&amp;os=windows">https://certbot.eff.org/instructions?ws=nginx&amp;os=windows</a></p>
+<p style="padding-left: 30px;">關掉系統 proxy 設定</p>
+<p style="padding-left: 30px;">安裝 certbot</p>
+<p style="padding-left: 30px;">以管理者開啟 cmd, 執行 certbot certonly --webroot</p>
+<p style="padding-left: 30px;"></p>
 <p></p><br />Network << <a href='Network.html'>Previous</a> <a href='HW1.html'>Next</a> >> HW1</div>
         
     <!-- footer -->
