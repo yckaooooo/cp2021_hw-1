@@ -2,7 +2,7 @@
         <head>
         <title>cp2021 homework site</title>
         <meta charset="utf-8">
-<meta property="head" content="H2">
+<meta property="head" content="H3">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
         <link rel="stylesheet" href="./../cmsimde/static/chimper/fonts/icomoon/style.css">
@@ -139,11 +139,35 @@ img.add_border {
           </div>
           
         </header>
-    <div id="tipue_search_content">run << <a href='run.html'>Previous</a> <a href='Snake.html'>Next</a> >> Snake<br /><h1>runsrc</h1>
-<h4>run 頁面在動態網頁的 html:</h4>
-<p><a href="./../downloads/run.txt">run.txt</a></p>
-<p></p>
-<br />run << <a href='run.html'>Previous</a> <a href='Snake.html'>Next</a> >> Snake</div>
+    <div id="tipue_search_content">Network << <a href='Network.html'>Previous</a> <a href='HW1.html'>Next</a> >> HW1<br /><h1>Fossil Server</h1>
+<p>從 W7 分組後, 各組在電腦輔助設計室中將會有一台 Windows 10 電腦的第三磁區並未保護, 因此可以用來建立 Fossil SCM Server, 此 Server 的功能可以用來與 Github 結合使用, 分別用來管理各組所共同開發的 Brython 程式, 並且提供 Forum, Chat 與 Documentation (用來伺服課程的靜態網頁) 功能.</p>
+<p>在 Windows 操作系統建立 Fossil SCM 所需要的工具:</p>
+<ol>
+<li>Fossil SCM - Fossil SCM server 主體.</li>
+<li>Stunnel - https 代理主機.</li>
+<li>Nginx - WWW 伺服器, 主要將 http 連線跳轉至 https.</li>
+<li>NSSM - 將 Fossil server, Stunnel, Nginx 執行程式設為 service.</li>
+</ol>
+<p>步驟 1: 從 <a href="https://fossil-scm.org/home/uv/download.html">https://fossil-scm.org/home/uv/download.html</a> 下載 fossil.exe, 存入可攜系統 y:\</p>
+<p>步驟 2: 從 <a href="https://www.stunnel.org/downloads.html">https://www.stunnel.org/downloads.html</a> 下載 stunnel 套件, 存入可攜系統 y:\</p>
+<p>步驟 3: 從 <a href="https://nginx.org/en/download.html">https://nginx.org/en/download.html</a> 下載 nginx 套件, 存入可攜系統 y:\</p>
+<p>步驟 4: 從 <a href="https://nssm.cc/download">https://nssm.cc/download</a> 下載 nssm.exe, 存入可攜系統 y:\</p>
+<p>建立 c:\pj2022\repo 目錄, 啟動可攜系統後, 進入 repo 目錄後, 以 fossil init pj2022.fossil 建立 pj2022.fossil 倉儲檔案.</p>
+<p>接著以 fossil user password Account Password -R pj2022.fossil 指令, 針對帳號為 Account 的 pj2022.fossil 管理者, 更改倉儲管理密碼為 Password.</p>
+<p>若要將 Fossil Server 在 port 9000 啟動, 執行 fossil server c:\pj2022\repo\pj2022.fossil --port 9000 後, 就可以利用瀏覽器開啟 <a href="http://localhost:9000">http://localhost:9000</a> 中的 pj2022.fossil 網際伺服器.</p>
+<p>接著設定 Stunnel 的 stunnel.conf 為:</p>
+<pre class="brush:html;auto-links:false;toolbar:false" contenteditable="false">; TLS front-end to a web server
+[https]
+accept  = Server_domain_name:443
+connect = 9000
+cert = localhost.crt
+key = localhost.key
+TIMEOUTclose = 0</pre>
+<p>以 y:\stunnel.exe 執行後, 必須將前面採 http 協定傳送 port 9000 資料的 Fossil SCM server 指令改為:</p>
+<p>fossil server c:\pj2022\repo\pj2022.fossil --port 9000 --https</p>
+<p>表示要送出 https 格式封包讓 Stunnel 對外連線.</p>
+<p>待 Fossil SCM server 與 Stunnel 都正常運作後, 就可以透過瀏覽器以 <a href="https://Server_domain_name">https://Server_domain_name</a> 連接至 pj2022.fossil 的網際倉儲伺服器.</p>
+<p></p><br />Network << <a href='Network.html'>Previous</a> <a href='HW1.html'>Next</a> >> HW1</div>
         
     <!-- footer -->
       <div class="container">
