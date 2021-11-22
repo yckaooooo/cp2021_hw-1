@@ -1129,8 +1129,8 @@ doc["add1to100"].bind('click', add)
 <!-- editor1 結束 --><hr/><!-- button 程式 1 ####################################### button 程式 1 結束-->
 <p></p>
 <!-- button 程式 2 ####################################### button 程式 2 開始-->
-<p>查驗輸入字串程式:</p>
-<p><button id="check_input">查驗輸入字串</button></p>
+<p>第二編輯區程式 (<a href="https://gist.github.com/mdecourse/fd325f7ff3fb71a9653bf156fe53d7dc">編輯</a> Snake 原始碼):</p>
+<p><button id="check_input">查驗輸入字串</button><button id="do_snake">Snake</button></p>
 <p><!-- 判斷輸入字串是否aA1$, 且至少 8 個字元-開始 -->
 <script type="text/python3">
 from browser import document as doc
@@ -1157,13 +1157,30 @@ def check_input(ev):
 # id 為 "check_input" 的按鈕點按時, 執行 check_input 方法
 doc["check_input"].bind('click', check_input)
 
-# 執行程式, 顯示輸出結果與清除輸出結果及對應按鈕綁定
+############ for snake 開始 ############
+
+snake_url = "https://gist.githubusercontent.com/mdecourse/fd325f7ff3fb71a9653bf156fe53d7dc/raw/1bd9880ddd3978cb2b9af9a23954f9f8c2588541/brython_snake.py"
+# 從 gist 取得程式碼
+snake_src = open(snake_url).read()
+
+def do_snake(ev):
+    Ace3.editor.setValue(snake_src)
+    Ace3.editor.scrollToRow(0)
+    Ace3.editor.gotoLine(0)
+    # 取得程式碼後即刻執行
+    Ace3.run()
+
+# id 為 "check_input" 的按鈕點按時, 執行 check_input 方法
+doc["do_snake"].bind('click', do_snake)
+############ for snake 結束 ############
+
+# 執行程式, 顯示輸出結果與清除輸出結果及對應按鈕綁定 - 第二編輯區 Ace3 共用
 doc['kw_run2'].bind('click', Ace3.run)
 doc['kw_show_console2'].bind('click', Ace3.show_console)
 doc['kw_clear_console2'].bind('click', Ace3.clear_console)
 doc['clear_bd2'].bind('click', clear_bd2)
 # 呼叫函式執行
-run1()
+check_input()
 </script>
 </p>
 <p><!-- 判斷輸入字串是否aA1$, 且至少 8 個字元-結束--></p>
