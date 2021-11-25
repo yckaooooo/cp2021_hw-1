@@ -1166,7 +1166,7 @@ doc["check_input"].bind('click', check_input)
 ############ for snake 開始 ############
 
 # 設定與 gist URL 對應的變數
-snake_url = "https://gist.githubusercontent.com/mdecourse/fd325f7ff3fb71a9653bf156fe53d7dc/raw/1bd9880ddd3978cb2b9af9a23954f9f8c2588541/brython_snake.py"
+snake_url = "https://gist.githubusercontent.com/mdecourse/d55158478f4f8fcbfedd455f8be8c7b6/raw/706bb9583d97f2e4b8e9027e686489e28f43cad9/brython_snake.py"
 # 根據程式碼所在的 URL 從 gist 取得程式碼
 snake_src = open(snake_url).read()
 
@@ -1179,7 +1179,7 @@ def do_snake(ev):
     Ace3.editor.scrollToRow(0)
     Ace3.editor.gotoLine(0)
     # 取得程式碼後若帶有下一行表示希望即刻執行
-    Ace3.run()
+    #Ace3.run()
 
 # id 為 "do_snake" 的按鈕點按時, 執行 do_snake 方法
 doc["do_snake"].bind('click', do_snake)
@@ -1224,8 +1224,7 @@ check_input()
 <h4>References:</h4>
 <p style="padding-left: 30px;"><a href="https://zerojudge.tw/">https://zerojudge.tw/</a></p>
 <p style="padding-left: 30px;"><a href="https://shaform.com/csdream/docs/problem-solving/">https://shaform.com/csdream/docs/problem-solving/</a></p>
-<p style="padding-left: 30px;"><a href="https://onlinejudge.org/">https://onlinejudge.org/</a></p>
-<h2>Snakey</h2>
+<p style="padding-left: 30px;"><a href="https://onlinejudge.org/">https://onlinejudge.org/</a></p><h2>Snakey</h2>
 <p>最原始的 Snakey.py 是在 CPython 命令列中, 利用 <a href="https://docs.python.org/3/howto/curses.html">Python curses</a> 執行. 這裡將要逐步改為能透過 Brython 直接在網頁中執行. 初步將無法在 Brython 環境運作的程式碼轉為 comment 的 <a href="https://gist.githubusercontent.com/mdecourse/d55158478f4f8fcbfedd455f8be8c7b6/raw/706bb9583d97f2e4b8e9027e686489e28f43cad9/snakey.py">Snakey.py</a>.</p>
 <!-- 導入 brython 程式庫 -->
 <script src="/static/brython.js"></script>
