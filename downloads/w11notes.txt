@@ -61,3 +61,13 @@ git remote add origin https://github.com/mdecourse/w11_1a.git
 以 origin 為代號, 將 url 設為遠端倉儲網際連結位址
 
 git push -u origin main 表示要將 upstream (上游) 設為 origin 連結中的分支, 其名稱為 main
+
+cls 代表 clear screen 指令, 清除畫面.
+
+cd .. 表示要 change directory to .., .. 代表上一個目錄.
+
+在命令列中按下 ctrl + c 代表 cancel 取消
+
+接下來要將 cmsimde 設為本倉儲的子模組
+
+git submodule add https://github.com/mdecourse/cmsimde.git cmsimde
