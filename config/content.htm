@@ -3048,7 +3048,158 @@ bsnake = button2(bsnake_url)
 doc["bsnake"].bind("click", bsnake.do)
 ################################## bsnake end
 </script>
-</p><h1>Final Project</h1>
+</p>
+<h2>Tiny C</h2>
+<p>ANSI C 程式 (或 C++) 該如何與 Brython 與 Python 程式結合應用. 以下是利用 <a href="https://www.msys2.org/">MSYS2</a> 編譯  TinyC Compiler 後, 再利用 TinyC Compiler 將 ANSI C 程式編譯為可以為 Python 呼叫執行的動態連結程式庫 (Dynamic Linked Library), 然後由 Brython 當作伺服器的前端, 主要透過 html 表單或 Get 取得設計參數後, 以 <a href="https://en.wikipedia.org/wiki/Ajax_(programming)">AJAX</a> 將設計參數送到以 Python + Flask 的伺服器端執行 (直接運算或利用 ANSIＣ編寫的 dll 執行運算) 後, 將運算結果傳回 Brython 展示.</p>
+<p>而 Server 端的 Python 則可以再與 Solidworks (<a href="https://mde.tw/cad2020/content/HW1_SW.html">SW</a>), Inventor (<a href="https://mde.tw/cad2020/content/HW1_INV.html">INV</a>), NX (<a href="https://mde.tw/cad2020/content/HW1_NX.html">NX</a> 10 之後各版) 與 <a href="https://www.coppeliarobotics.com/">CoppeliaSim</a> 等 MCAD 或機電模擬套件結合, 讓分散各地的機械產品開發者可以透過網路架構進行協同產品設計.</p>
+<p>Tiny C compiler 原始碼:</p>
+<p style="padding-left: 30px;"><a href="https://github.com/TinyCC/tinycc">https://github.com/TinyCC/tinycc</a></p>
+<p>下載 <a href="https://drive.google.com/file/d/1hEGgONw8ahNs7JPAKOurc7JvGfhgO2zY/view?usp=sharing">compile_copsim_for_pj2022.7z</a> (檔案大小 4 GB, 解開壓縮後 14 GB), 用於編譯 Tiny C 編譯程式.</p>
+<p>啟動 compile_copsim 可攜程式系統.</p>
+<p>git clone <a href="https://github.com/TinyCC/tinycc.git">https://github.com/TinyCC/tinycc.git</a></p>
+<p>cd win32 執行 build-tcc.bat 就可以完成 Tiny C compiler 的編譯.</p>
+<p>結合 Brython, AJAX, Flask, CORS, TinyC 建立跨網站協同設計程式範例:</p>
+<p style="padding-left: 30px;"><a href="/downloads/brython_ajax_flask_tinyc.7z">brython_ajax_flask_tinyc.7z</a></p>
+<p>將兩浮點數相乘的 ANSI C 程式:</p>
+<pre class="brush:cpp;auto-links:false;toolbar:false" contenteditable="false">// multiply2.c
+#include &lt;stdio.h&gt;
+ 
+float multiply(float, float);
+ 
+__declspec(dllexport) float
+multiply(float num1, float num2)
+{
+return num1 * num2;
+}</pre>
+<p>利用 TinyC Compiler 將 multiply2.c 編譯為 dll:</p>
+<p>Y:\tmp\tinycc\win32\tcc -w -shared -DLIBTCC_AS_DLL -DONE_SOURCE multiply2.c -o multiply2.dll</p>
+<p>Python 程式呼叫 multiply2.dll 執行浮點數相乘:</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">import ctypes
+ 
+lib = ctypes.CDLL('./multiply2.dll')
+# By default functions are assumed to return the C int type. Other return types can be specified by setting the restype attribute of the function object.
+lib.multiply.restype = ctypes.c_float
+result = lib.multiply(ctypes.c_float(3.0), ctypes.c_float(2.0))
+print(result)</pre>
+<p>在 Brython 前端執行建立超文件輸入表單, 並以 AJAX 將設計參數送到 Flask 伺服器執行運算後將結果傳回.</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false"># 從 browser 導入 document
+from browser import document
+# 使用者可以透過 window 當作介面使用其他 Javascript 功能
+from browser import html, window, ajax
+# https://www.brython.info/static_doc/en/ajax.html
+
+brython_div = document["brython_div"]
+output = html.DIV("output")
+output.id = "output"
+brython_div &lt;= output
+
+# 插入輸入表單
+form = html.FORM()
+A = html.INPUT(type="text", id="A", size="5", name="a", value="2")
+B = html.INPUT(type="text", id="B", size="5", name="b", value="3")
+button = html.BUTTON("calculate", id="calculate")
+form &lt;= "a: " + A + html.BR()
+form &lt;= "b: " + B + html.BR()
+brython_div &lt;= form + button + html.BR()
+
+def log(*args):
+    output = document["output"]
+    output.html += ', '.join(str(arg) for arg in args)
+
+def show(req):
+    document["output"].clear()
+    log(req.text)
+    
+def on_complete(req):
+    document["output"].clear()
+    if req.status==200 or req.status==0:
+        document["output"] &lt;= req.text
+    else:
+        document["output"] &lt;= "error " + req.text
+         
+def post(ev):  
+    # a 為 id="A" 輸入欄位中所輸入的值
+    a = document['A'].value
+    # b 為 id="B" 輸入欄位中所輸入的值        
+    b = document['B'].value
+    url = "http://localhost:9448/add_numbers"
+    ajax.post(url,
+             oncomplete=show,
+             data={"a": a, "b":b})
+    # req 從 ajax 模組中的 ajax 類別建立案例, 為一個 ajax 物件        
+    '''
+    req = ajax.Ajax()
+    # ajax 物件中的 bind 方法, 第一個輸入變數為 evt, 'complete' 表示 ajax 從伺服器取值完成後, 執行 on_complete 函式
+    req.bind('complete', on_complete)
+    req.open('POST', url, True)
+    req.set_header('content-type','application/x-www-form-urlencoded')
+    req.send({"a": a, "b":b}) 
+    '''
+ 
+# 使用者按下 id="calculate" 按鈕, 將會執行上述 get("/add_numbers") 函式
+document['calculate'].bind('click', post)
+
+</pre>
+<p>Server 端的 Flask 程式, 呼叫 multiply2.dll 執行運算後, 將結果傳回 Brython 端檢視:</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false"># 從 browser 導入 document
+from browser import document
+# 使用者可以透過 window 當作介面使用其他 Javascript 功能
+from browser import html, window, ajax
+# https://www.brython.info/static_doc/en/ajax.html
+
+brython_div = document["brython_div"]
+output = html.DIV("output")
+output.id = "output"
+brython_div &lt;= output
+
+# 插入輸入表單
+form = html.FORM()
+A = html.INPUT(type="text", id="A", size="5", name="a", value="2")
+B = html.INPUT(type="text", id="B", size="5", name="b", value="3")
+button = html.BUTTON("calculate", id="calculate")
+form &lt;= "a: " + A + html.BR()
+form &lt;= "b: " + B + html.BR()
+brython_div &lt;= form + button + html.BR()
+
+def log(*args):
+    output = document["output"]
+    output.html += ', '.join(str(arg) for arg in args)
+
+def show(req):
+    document["output"].clear()
+    log(req.text)
+    
+def on_complete(req):
+    document["output"].clear()
+    if req.status==200 or req.status==0:
+        document["output"] &lt;= req.text
+    else:
+        document["output"] &lt;= "error " + req.text
+         
+def post(ev):  
+    # a 為 id="A" 輸入欄位中所輸入的值
+    a = document['A'].value
+    # b 為 id="B" 輸入欄位中所輸入的值        
+    b = document['B'].value
+    url = "http://localhost:9448/add_numbers"
+    ajax.post(url,
+             oncomplete=show,
+             data={"a": a, "b":b})
+    # req 從 ajax 模組中的 ajax 類別建立案例, 為一個 ajax 物件        
+    '''
+    req = ajax.Ajax()
+    # ajax 物件中的 bind 方法, 第一個輸入變數為 evt, 'complete' 表示 ajax 從伺服器取值完成後, 執行 on_complete 函式
+    req.bind('complete', on_complete)
+    req.open('POST', url, True)
+    req.set_header('content-type','application/x-www-form-urlencoded')
+    req.send({"a": a, "b":b}) 
+    '''
+ 
+# 使用者按下 id="calculate" 按鈕, 將會執行上述 get("/add_numbers") 函式
+document['calculate'].bind('click', post)
+
+</pre>
+<p></p><h1>Final Project</h1>
 <p>Final Project 佔學期成績 30%</p>
 <p><a href="https://github.com/mdecourse/cp2021/discussions/11">Final Project 具體項目成果回報區</a></p>
 <p>利用 Brython 寫一個會<span style="background-color: #ffff99;">令人想玩</span>的網際遊戲.</p>
