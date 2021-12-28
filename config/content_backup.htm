@@ -3050,6 +3050,13 @@ doc["bsnake"].bind("click", bsnake.do)
 </script>
 </p>
 <h2>Tiny C</h2>
+<p>學習 C 可以採用的電子書 (在校園網路可以直接下載):</p>
+<p style="padding-left: 30px;"><a href="https://link.springer.com/book/10.1007/978-3-030-50750-3">Computer Programming in C for Begineers</a>. (2020)</p>
+<p style="padding-left: 30px;"><a href="https://link.springer.com/book/10.1007/978-1-4842-6927-5">Pointers in C Programming</a>. (2021)</p>
+<p style="padding-left: 30px;"><a href="https://link.springer.com/book/10.1007/978-1-4612-1484-7">C Programming: The Essentials for Engineers and Scientists</a>. (1999)</p>
+<p>延伸至 C++ 可以採用的電子書:</p>
+<p style="padding-left: 30px;"><a href="https://link.springer.com/book/10.1007/978-1-349-14795-3">Mastering C++ Programming</a>. (1998)</p>
+<p style="padding-left: 30px;"><a href="https://link.springer.com/book/10.1007/978-1-4471-0311-0">Multi-Paradigm Programming using C++</a>. (2001)</p>
 <p>ANSI C 程式 (或 C++) 該如何與 Brython 與 Python 程式結合應用. 以下是利用 <a href="https://www.msys2.org/">MSYS2</a> 編譯  TinyC Compiler 後, 再利用 TinyC Compiler 將 ANSI C 程式編譯為可以為 Python 呼叫執行的動態連結程式庫 (Dynamic Linked Library), 然後由 Brython 當作伺服器的前端, 主要透過 html 表單或 Get 取得設計參數後, 以 <a href="https://en.wikipedia.org/wiki/Ajax_(programming)">AJAX</a> 將設計參數送到以 Python + Flask 的伺服器端執行 (直接運算或利用 ANSIＣ編寫的 dll 執行運算) 後, 將運算結果傳回 Brython 展示.</p>
 <p>而 Server 端的 Python 則可以再與 Solidworks (<a href="https://mde.tw/cad2020/content/HW1_SW.html">SW</a>), Inventor (<a href="https://mde.tw/cad2020/content/HW1_INV.html">INV</a>), NX (<a href="https://mde.tw/cad2020/content/HW1_NX.html">NX</a> 10 之後各版) 與 <a href="https://www.coppeliarobotics.com/">CoppeliaSim</a> 等 MCAD 或機電模擬套件結合, 讓分散各地的機械產品開發者可以透過網路架構進行協同產品設計.</p>
 <p>Tiny C compiler 原始碼:</p>
@@ -3059,7 +3066,7 @@ doc["bsnake"].bind("click", bsnake.do)
 <p>git clone <a href="https://github.com/TinyCC/tinycc.git">https://github.com/TinyCC/tinycc.git</a></p>
 <p>cd win32 執行 build-tcc.bat 就可以完成 Tiny C compiler 的編譯.</p>
 <p>結合 Brython, AJAX, Flask, CORS, TinyC 建立跨網站協同設計程式範例:</p>
-<p style="padding-left: 30px;"><a href="/downloads/brython_ajax_flask_tinyc.7z">/downloads/brython_ajax_flask_tinyc.7z</a></p>
+<p style="padding-left: 30px;"><a href="/downloads/brython_ajax_flask_tinyc.7z">brython_ajax_flask_tinyc.7z</a></p>
 <p>將兩浮點數相乘的 ANSI C 程式:</p>
 <pre class="brush:cpp;auto-links:false;toolbar:false" contenteditable="false">// multiply2.c
 #include &lt;stdio.h&gt;
